@@ -1,0 +1,41 @@
+# Root ignores
+.DS_Store
+Thumbs.db
+
+# Editors/IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.*.local
+*.local
+
+# Node common
+node_modules/
+dist/
+build/
+
+# Frontend (Create React App)
+ai-studio-frontend/node_modules/
+ai-studio-frontend/build/
+ai-studio-frontend/dist/
+ai-studio-frontend/.cache/
+ai-studio-frontend/.env.local
+ai-studio-frontend/coverage/
+
+# Backend (Laravel)
+ai-studio/vendor/
+ai-studio/node_modules/
+ai-studio/storage/
+ai-studio/bootstrap/cache/
+ai-studio/public/hot
+ai-studio/public/storage
+ai-studio/.env

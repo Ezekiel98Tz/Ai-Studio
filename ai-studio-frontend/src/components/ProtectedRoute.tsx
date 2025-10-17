@@ -1,0 +1,14 @@
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../store/auth';
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, setModalOpen } = useAuth();
+  if (!user) {
+    setModalOpen(true);
+    return <Navigate to="/ai-studio" replace />;
+  }
+  return <>{children}</>;
+};
+
+export default ProtectedRoute;
