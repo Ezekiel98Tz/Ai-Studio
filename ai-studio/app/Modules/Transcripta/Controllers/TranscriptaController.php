@@ -14,8 +14,24 @@ class TranscriptaController extends Controller
 {
     public function process(Request $request, TranscriptaService $service): JsonResponse
     {
+        Log::info('TranscriptaController::process started', [
+            'has_file' => $request->hasFile('file'),
+            'content_length' => $request->header('Content-Length'),
+            'content_type' => $request->header('Content-Type'),
+        ]);
+
+        if ($request->hasFile('file')) {
+            $f = $request->file('file');
+            Log::info('File details', [
+                'original_name' => $f->getClientOriginalName(),
+                'mime_type' => $f->getMimeType(),
+                'size' => $f->getSize(),
+                'error' => $f->getError(),
+            ]);
+        }
+
         $request->validate([
-            'file' => ['required', 'file', 'mimetypes:audio/*,video/*'],
+            'file' => ['required', 'file'],
         ]);
 
         $file = $request->file('file');

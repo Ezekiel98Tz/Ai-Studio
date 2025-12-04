@@ -37,8 +37,10 @@ export const useAuth = create<AuthState>((set) => ({
   login: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      const res = await api.post('/api/login', { email, password });
-      set({ user: res.data.user, loading: false, modalOpen: false });
+      await api.get('/sanctum/csrf-cookie');
+      await api.post('/api/login', { email, password });
+      const me = await api.get('/api/user');
+      set({ user: me.data, loading: false, modalOpen: false });
     } catch (e: any) {
       set({ error: e?.response?.data?.message || 'Login failed', loading: false });
     }
@@ -46,8 +48,10 @@ export const useAuth = create<AuthState>((set) => ({
   register: async (name, email, password) => {
     set({ loading: true, error: null });
     try {
-      const res = await api.post('/api/register', { name, email, password });
-      set({ user: res.data.user, loading: false, modalOpen: false });
+      await api.get('/sanctum/csrf-cookie');
+      await api.post('/api/register', { name, email, password, password_confirmation: password });
+      const me = await api.get('/api/user');
+      set({ user: me.data, loading: false, modalOpen: false });
     } catch (e: any) {
       set({ error: e?.response?.data?.message || 'Register failed', loading: false });
     }

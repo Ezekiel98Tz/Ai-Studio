@@ -13,17 +13,23 @@ class ShortifyController extends Controller
 {
     public function generate(Request $request, ShortifyService $service): JsonResponse
     {
-        $data = $request->validate([
-            'source' => ['required', 'string'], // could be file path or URL
-        ]);
-
-        $result = $service->generateFromVideo($data['source']);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $result = $service->generateFromUploaded($file);
+            $payload = $file->getClientOriginalName();
+        } else {
+            $data = $request->validate([
+                'source' => ['required', 'string'],
+            ]);
+            $result = $service->generateFromVideo($data['source']);
+            $payload = $data['source'];
+        }
 
         // Log usage (fallback)
         Log::info('tool_usage', [
             'user_id' => Auth::id(),
             'tool' => 'shortify',
-            'payload' => $data['source'],
+            'payload' => $payload,
             'timestamp' => now()->toIso8601String(),
         ]);
 

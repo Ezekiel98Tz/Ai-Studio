@@ -1,15 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = createRoot(document.getElementById('root') as HTMLElement);
 
 const queryClient = new QueryClient();
 

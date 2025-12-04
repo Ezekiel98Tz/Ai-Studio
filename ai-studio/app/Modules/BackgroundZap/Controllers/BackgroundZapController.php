@@ -13,17 +13,23 @@ class BackgroundZapController extends Controller
 {
     public function removeBackground(Request $request, BackgroundZapService $service): JsonResponse
     {
-        $data = $request->validate([
-            'image' => ['required', 'string'],
-        ]);
-
-        $result = $service->removeBackground($data['image']);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $result = $service->removeBackgroundUploaded($file);
+            $payload = $file->getClientOriginalName();
+        } else {
+            $data = $request->validate([
+                'image' => ['required', 'string'],
+            ]);
+            $result = $service->removeBackground($data['image']);
+            $payload = $data['image'];
+        }
 
         // Log usage (fallback)
         Log::info('tool_usage', [
             'user_id' => Auth::id(),
             'tool' => 'backgroundzap',
-            'payload' => $data['image'],
+            'payload' => $payload,
             'timestamp' => now()->toIso8601String(),
         ]);
 

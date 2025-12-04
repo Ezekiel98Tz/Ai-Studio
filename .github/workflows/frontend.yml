@@ -1,0 +1,29 @@
+name: frontend-ci
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-studio-frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: ai-studio-frontend/package-lock.json
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm test -- --ci --watchAll=false
+      - name: Build
+        run: npm run build
+
